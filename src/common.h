@@ -18,10 +18,22 @@
 #include <errno.h>
 #include <string.h>
 
+#define PIN_LOW		0
+#define PIN_HIGH	1
+
 #define TRUE 1
 #define FALSE 0
 
-#define PIN_LOW		0
-#define PIN_HIGH	1
+#if defined(PLATFORM_UBUNTU)
+typedef unsigned char   bool;
+typedef unsigned char   u_int8;
+typedef signed char     int8;
+typedef unsigned short  u_int16;
+typedef signed short    int16;
+typedef unsigned int    u_int32;
+typedef signed int      int32;
+typedef unsigned long   u_int64;
+typedef signed long     int64;
+#endif
 
 #endif /* COMMON_H_ */
