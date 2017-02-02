@@ -14,7 +14,6 @@
  *********************************************************************************************************/
 #include "common.h"
 #include "lib_epd.h"
-#include "drv_adc.h"
 
 static void _base_draw(void)
 {
@@ -177,10 +176,7 @@ void epaperTest(void)
 
 int main(void)
 {
-
 	epaperTest();
-
-	//adcTest();
 
 	exit(0);
 }

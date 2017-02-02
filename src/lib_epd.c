@@ -46,11 +46,15 @@ void lib_epd_init(void)
 {
 	FILE  *fd=NULL;
 
+#if defined(PLATFORM_BBB)
 	fd=fopen(SYSFS_UART_DEV,"w");
-	fwrite("BB-UART4",sizeof(int),8,fd);   /*BB-UART4ÓÐ8¸ö×Ö·û*/
+	fwrite("BB-UART4",sizeof(int),8,fd);   /* "BB-UART4" length is 8 */
 	fclose(fd);
 
 	drv_uart_init("/dev/ttyO4", 115200, 8, 1, 'N');
+#elif deinfed(PLATFORM_UBUNTU)
+    drv_uart_init("/dev/ttyO4", 115200, 8, 1, 'N');
+#endif
 	wake_up = PIN_LOW;
 	reset = PIN_LOW;
 }

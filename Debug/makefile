@@ -29,13 +29,13 @@ all: myEPaper
 myEPaper: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -lasound -o "myEPaper" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc  -o "myEPaper" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) myEPaper
+	-$(RM) $(EXECUTABLES)$(OBJS)$(C_DEPS) myEPaper
 	-@echo ' '
 
 .PHONY: all clean dependents
