@@ -16,53 +16,57 @@
 
 
 
-/*
- color define
- */
+/* Color define */
 #define    WHITE                    0x03
 #define    GRAY                     0x02
 #define    DARK_GRAY                0x01
 #define    BLACK                    0x00
 
 /* Frame buff size */
-#define    FRAME_BUFF_SIZE          512	
-
+#define     FRAME_BUFF_SIZE         512	
 /* Frame start byte */
-#define    START                    0xA5
-
-/* Frame command definitions */
-#define    CMD_HANDSHAKE            0x00    //handshake
-#define    CMD_SET_BAUD                       0x01           //set baud
-#define    CMD_READ_BAUD                      0x02           //read baud
-#define    CMD_MEMORYMODE                     0x07           //set memory mode
-#define    CMD_STOPMODE                       0x08           //enter stop mode
-#define    CMD_UPDATE                         0x0A           //update
-#define    CMD_SCREEN_ROTATION                0x0D           //set screen rotation
-#define    CMD_LOAD_FONT                      0x0E           //load font
-#define    CMD_LOAD_PIC                       0x0F           //load picture
-
-#define    CMD_SET_COLOR                      0x10           //set color
-#define    CMD_SET_EN_FONT                    0x1E           //set english font
-#define    CMD_SET_CH_FONT                    0x1F           //set chinese font
-
-#define    CMD_DRAW_PIXEL                     0x20           //set pixel
-#define    CMD_DRAW_LINE                      0x22           //draw line
-#define    CMD_FILL_RECT                      0x24           //fill rectangle
-#define    CMD_DRAW_CIRCLE                    0x26           //draw circle
-#define    CMD_FILL_CIRCLE                    0x27           //fill circle
-#define    CMD_DRAW_TRIANGLE                  0x28           //draw triangle
-#define    CMD_FILL_TRIANGLE                  0x29           //fill triangle
-#define    CMD_CLEAR                          0x2E           //clear screen use back color
-
-#define    CMD_DRAW_STRING                    0x30           //draw string
-
-#define    CMD_DRAW_BITMAP                    0x70           //draw bitmap
-
+#define     START                   0xA5
 /* Frame end sequence */
-#define    END_0                    0xCC
-#define    END_1                    0x33
-#define    END_2                    0xC3
-#define    END_3                    0x3C
+#define     END_0                   0xCC
+#define     END_1                   0x33
+#define     END_2                   0xC3
+#define     END_3                   0x3C
+/* Frame command definitions: System configuration */
+#define     CMD_HANDSHAKE           0x00    //handshake
+#define     CMD_SET_BAUD            0x01    //set baudrate
+#define     CMD_READ_BAUD           0x02    //read baud
+#define     CMD_GET_MEM_MODE        0x07    // TODO: Read memory mode
+#define     CMD_SET_MEM_MODE        0x07    //set memory mode
+#define     CMD_STOP_MODE           0x08    //enter stop mode
+#define     CMD_UPDATE              0x0A    //update screen
+#define     CMD_GET_SCR_ROTATION    0x0C    // TODO: READ screen rotation
+#define     CMD_SET_SCR_ROTATION    0x0D    //set screen rotation
+#define     CMD_LOAD_FONT           0x0E    //load font
+#define     CMD_LOAD_PIC            0x0F    //load picture
+/* Frame command definitions: Display configuration */
+#define     CMD_SET_COLOR           0x10    //set color
+#define     CMD_GET_COLOR           0x11    // TODO: get color
+#define     CMD_GET_EN_FONT         0x1C    // TODO: get English font size. 1:32dot 2:48dot 3:64dot
+#define     CMD_GET_CH_FONT         0x1D    // TODO: get Chinese font size. 1:32dot 2:48dot 3:64dot
+#define     CMD_SET_EN_FONT         0x1E    //set english font
+#define     CMD_SET_CH_FONT         0x1F    //set chinese font
+/* Frame command definitions: Drawing */
+#define     CMD_DRAW_PIXEL          0x20    //set pixel
+#define     CMD_DRAW_LINE           0x22    //draw line
+#define     CMD_FILL_RECT           0x24    //fill rectangle
+#define     CMD_DRAW_RECT           0x25    // TODO: draw rectangle
+#define     CMD_DRAW_CIRCLE         0x26    //draw circle
+#define     CMD_FILL_CIRCLE         0x27    //fill circle
+#define     CMD_DRAW_TRIANGLE       0x28    //draw triangle
+#define     CMD_FILL_TRIANGLE       0x29    //fill triangle
+#define     CMD_CLEAR               0x2E    //clear screen use background color
+/* Frame command definitions: Text */
+#define     CMD_DRAW_STRING         0x30    //draw string
+/* Frame command definitions: image */
+#define     CMD_DRAW_BITMAP         0x70    //draw bitmap
+/* Frame command data dummy value */
+#define     CMD_DATA_BYTE           0x00
+
 
 /*
  FONT

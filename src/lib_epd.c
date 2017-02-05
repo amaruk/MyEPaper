@@ -3,9 +3,10 @@
  * | Start|   Length  |  Cmd |  Data  |         End         | Checksum|
  * |      |Start~Check|      | 0~1024 |                     | XOR S~E |
  * --------------------------------------------------------------------
- * | 0xA5 | 0x00 0x00 | 0x00 |        | 0xcc 0x33 0xC3 0x3C |   0x00  |
+ * | 0xA5 | 0x00 0x00 | 0x00 |        | 0xCC 0x33 0xC3 0x3C |   0x00  |
  * --------------------------------------------------------------------
  * 
+ * So frames without data contains 0x0009 bytes.
  */
 #include "common.h"
 #include "lib_epd.h"
@@ -14,21 +15,25 @@
 static int wake_up = 0; /* Wake up pin */
 static int reset = 0; /* Reset pin */
 
-/*
- command define
- */
+/* Command frames */
 static const unsigned char _frame_handshake[8] =
-{ 0xA5, 0x00, 0x09, CMD_HANDSHAKE, 0xCC, 0x33, 0xC3, 0x3C };     //CMD_HANDSHAKE
+{ START, 0x00, 0x09, CMD_HANDSHAKE, END_0, END_1, END_2, END_3 };     //CMD_HANDSHAKE
 static const unsigned char _frame_read_baud[8] =
-{ 0xA5, 0x00, 0x09, CMD_READ_BAUD, 0xCC, 0x33, 0xC3, 0x3C };     //CMD_READ_BAUD
+{ START, 0x00, 0x09, CMD_READ_BAUD, END_0, END_1, END_2, END_3 };     //CMD_READ_BAUD
 static const unsigned char _frame_stopmode[8] =
-{ 0xA5, 0x00, 0x09, CMD_STOPMODE, 0xCC, 0x33, 0xC3, 0x3C };       //CMD_STOPMODE
+{ START, 0x00, 0x09, CMD_STOP_MODE, END_0, END_1, END_2, END_3 };       //CMD_STOPMODE
 static const unsigned char _frame_update[8] =
-{ 0xA5, 0x00, 0x09, CMD_UPDATE, 0xCC, 0x33, 0xC3, 0x3C };           //CMD_UPDATE
+{ START, 0x00, 0x09, CMD_UPDATE, END_0, END_1, END_2, END_3 };           //CMD_UPDATE
 static const unsigned char _frame_load_font[8] =
-{ 0xA5, 0x00, 0x09, CMD_LOAD_FONT, 0xCC, 0x33, 0xC3, 0x3C };     //CMD_LOAD_FONT
+{ START, 0x00, 0x09, CMD_LOAD_FONT, END_0, END_1, END_2, END_3 };     //CMD_LOAD_FONT
 static const unsigned char _frame_load_pic[8] =
-{ 0xA5, 0x00, 0x09, CMD_LOAD_PIC, 0xCC, 0x33, 0xC3, 0x3C };       //CMD_LOAD_PIC
+{ START, 0x00, 0x09, CMD_LOAD_PIC, END_0, END_1, END_2, END_3 };       //CMD_LOAD_PIC
+static const unsigned char _frame_byte[9] =                             //Cmd with byte data
+{ START, 0x00, 0x09, CMD_LOAD_PIC, CMD_DATA_BYTE, END_0, END_1, END_2, END_3 };
+static const unsigned char _frame_short[10] =                           //Cmd with short data
+{ START, 0x00, 0x09, CMD_LOAD_PIC, CMD_DATA_BYTE, CMD_DATA_BYTE, END_0, END_1, END_2, END_3 };
+static const unsigned char _frame_dword[12] =                           //Cmd with dword data
+{ START, 0x00, 0x09, CMD_LOAD_PIC, CMD_DATA_BYTE, CMD_DATA_BYTE, CMD_DATA_BYTE, CMD_DATA_BYTE, END_0, END_1, END_2, END_3 };
 
 /* Command data */
 static unsigned char _frame_buff[FRAME_BUFF_SIZE];
@@ -103,7 +108,8 @@ void lib_epd_handshake(void)
     _frame_buff[8] = _checksum(_frame_buff, 8);
 
     drv_uart_putchars(_frame_buff, 9);
-    drv_uart_getchars(_frame_buff);
+    drv_uart_getchars(_frame_buff); // Returns "OK" if epaper is ready
+    // TODO: Check handshake result
 }
 
 /* Set baudrate */
@@ -130,7 +136,6 @@ void lib_epd_set_baud(long baud)
     drv_uart_putchars(_frame_buff, 13);
 
     usleep(10000);
-    //FOX uart.baud(baud);
 }
 
 /* Read baudrate */
@@ -140,10 +145,11 @@ void lib_epd_read_baud(void)
     _frame_buff[8] = _checksum(_frame_buff, 8);
 
     drv_uart_putchars(_frame_buff, 9);
+    // TODO: Read baud in ASCII format
 }
 
 /* Choose memory to be used.
- * mode: MEM_TF or MEM_NAND */
+ * mode: MEM_TF(1) or MEM_NAND(0) */
 void lib_epd_set_memory(unsigned char mode)
 {
     _frame_buff[0] = START;
@@ -151,7 +157,7 @@ void lib_epd_set_memory(unsigned char mode)
     _frame_buff[1] = 0x00;
     _frame_buff[2] = 0x0A;
 
-    _frame_buff[3] = CMD_MEMORYMODE;
+    _frame_buff[3] = CMD_SET_MEM_MODE;
 
     _frame_buff[4] = mode;
 
@@ -184,7 +190,7 @@ void lib_epd_udpate(void)
     drv_uart_putchars(_frame_buff, 9);
 }
 
-/* Normal screen or upside down screen */
+/* Normal screen (0) or upside down screen (1) */
 void lib_epd_screen_rotation(unsigned char mode)
 {
     _frame_buff[0] = START;
@@ -192,7 +198,7 @@ void lib_epd_screen_rotation(unsigned char mode)
     _frame_buff[1] = 0x00;
     _frame_buff[2] = 0x0A;
 
-    _frame_buff[3] = CMD_SCREEN_ROTATION;
+    _frame_buff[3] = CMD_SET_SCR_ROTATION;
 
     _frame_buff[4] = mode;
 
@@ -233,8 +239,8 @@ void lib_epd_set_color(unsigned char color, unsigned char bkcolor)
 
     _frame_buff[3] = CMD_SET_COLOR;
 
-    _frame_buff[4] = color;
-    _frame_buff[5] = bkcolor;
+    _frame_buff[4] = color; // Foreground
+    _frame_buff[5] = bkcolor; // Background
 
     _frame_buff[6] = END_0;
     _frame_buff[7] = END_1;
@@ -245,7 +251,7 @@ void lib_epd_set_color(unsigned char color, unsigned char bkcolor)
     drv_uart_putchars(_frame_buff, 11);
 }
 
-/* Set English font */
+/* Set English font: 1:32dot 2:48dot 3:64dot */
 void lib_epd_set_en_font(unsigned char font)
 {
     _frame_buff[0] = START;
@@ -266,7 +272,7 @@ void lib_epd_set_en_font(unsigned char font)
     drv_uart_putchars(_frame_buff, 10);
 }
 
-/* Set Chinese font */
+/* Set Chinese font: 1:32dot 2:48dot 3:64dot */
 void lib_epd_set_ch_font(unsigned char font)
 {
     _frame_buff[0] = START;
@@ -288,6 +294,7 @@ void lib_epd_set_ch_font(unsigned char font)
 }
 
 /* Draw single pixel */
+// TODO: should be int16
 void lib_epd_draw_pixel(int x0, int y0)
 {
     _frame_buff[0] = START;
@@ -312,6 +319,7 @@ void lib_epd_draw_pixel(int x0, int y0)
 }
 
 /* Draw line */
+// TODO: Should be int16
 void lib_epd_draw_line(int x0, int y0, int x1, int y1)
 {
     _frame_buff[0] = START;
@@ -340,6 +348,7 @@ void lib_epd_draw_line(int x0, int y0, int x1, int y1)
 }
 
 /* Fill rectangle */
+// TODO: should be int16
 void lib_epd_fill_rect(int x0, int y0, int x1, int y1)
 {
     _frame_buff[0] = START;
@@ -368,6 +377,7 @@ void lib_epd_fill_rect(int x0, int y0, int x1, int y1)
 }
 
 /* Draw circle */
+// TODO: should be int16
 void lib_epd_draw_circle(int x0, int y0, int r)
 {
     _frame_buff[0] = START;
@@ -394,6 +404,7 @@ void lib_epd_draw_circle(int x0, int y0, int r)
 }
 
 /* Fill circle */
+// TODO: should be int16
 void lib_epd_fill_circle(int x0, int y0, int r)
 {
     _frame_buff[0] = START;
@@ -420,6 +431,7 @@ void lib_epd_fill_circle(int x0, int y0, int r)
 }
 
 /* Draw triangle */
+// TODO: should be int16
 void lib_epd_draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2)
 {
     _frame_buff[0] = START;
@@ -452,6 +464,7 @@ void lib_epd_draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2)
 }
 
 /* Fill triangle */
+// TODO: should be int16
 void lib_epd_fill_triangle(int x0, int y0, int x1, int y1, int x2, int y2)
 {
     _frame_buff[0] = START;
@@ -514,6 +527,8 @@ void lib_epd_disp_char(unsigned char ch, int x0, int y0)
 }
 
 /* Display text */
+// TODO: Fix the buff size bug
+// TODO: should be int16
 void lib_epd_disp_string(const void * p, int x0, int y0)
 {
     int string_size;
@@ -547,7 +562,8 @@ void lib_epd_disp_string(const void * p, int x0, int y0)
     drv_uart_putchars(_frame_buff, string_size + 5);
 }
 
-/* Display BMP */
+/* Display BMP. Bitmap file name string maximum length is 11 */
+// TODO: should be int16
 void lib_epd_disp_bitmap(const void * p, int x0, int y0)
 {
     int string_size;

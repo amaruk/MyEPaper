@@ -194,7 +194,7 @@ int drv_uart_getchars(unsigned char * ptr)
     {
         //printf("\nLen %d ", nread);
         *(ptr + nread) = '\0';
-        printf("rtn [%s]\n", ptr);
+        printf("drv_uart_getchars: [%s]\n", ptr);
     } else
     {
         printf("drv_uart_getchars error\n");
