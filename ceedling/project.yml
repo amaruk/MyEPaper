@@ -1,16 +1,27 @@
 ---
 
 # Notes:
-# Sample project C code is not presently written to produce a release artifact.
-# As such, release build options are disabled.
-# This sample, therefore, only demonstrates running a collection of unit tests.
+# This YAML file is modified and commented based on the default ceedling
+# project configuration file.
+# 
+# Amaruk 2017.02.08
 
 :project:
+# TRUE: enable CExcpetion
   :use_exceptions: FALSE
+# TRUE: enable CMock
+  :use_mock: TRUE
+# TRUE: support test files with conditional compilation statements 
+# (e.g. #ifdef) and header files to be mocked that contain conditional
+# preprocessor statements and/or macros.
   :use_test_preprocessor: TRUE
+# TRUE: support incremental build with more than three level include
+  :use_deep_dependencies: TRUE
   :use_auxiliary_dependencies: TRUE
   :build_root: build
+# TRUE: Enable release build
 #  :release_build: TRUE
+# Test case files' prefix
   :test_file_prefix: test_
 
 #:release_build:
@@ -27,7 +38,7 @@
     - +:test/**
     - -:test/support
   :source:
-    - src/**
+    - ../src/**
   :support:
     - test/support
 
