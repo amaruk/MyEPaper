@@ -28,8 +28,23 @@
 #  :output: MyApp.out
 #  :use_assembly: FALSE
 
+# Environment variables to be inserted into shell path
+# e.g.
+#     - :license_server: gizmo.intranet
+#     LICENSE_SERVER set with value “gizmo.intranet”
 :environment:
 
+# File extensions
+# header: .h      C header files
+# source: .c      C code files (whether source or test files)
+# assembly: .s    Assembly files (contents wholly assembly instructions)
+# object: .o      Resulting binary output of C code compiler (and assembler)
+# executable: .exe/.out   Binary executable to be loaded and executed
+#                         upon target hardware .exe or .out (Win or *nix)
+# testpass: .pass   Test results file (not likely to ever need a new value)
+# testfail: .fail   Test results file (not likely to ever need a new value)
+# dependencies: .d  File containing make-style dependency rules created
+#                   by gcc preprocessor
 :extension:
   :executable: .out
 
@@ -42,6 +57,8 @@
   :support:
     - test/support
 
+# command line defines used in test and release compilation
+# by configured tools
 :defines:
   # in order to add common defines:
   #  1) remove the trailing [] from the :common: section
@@ -54,6 +71,8 @@
     - *common_defines
     - TEST
 
+# configure CMock's code generation options and
+# set symbols used to modify CMock's compiled features.
 :cmock:
   :mock_prefix: mock_
   :when_no_prototypes: :warn
@@ -67,6 +86,25 @@
     uint32:   UINT32
     int8:     INT8
     bool:     UINT8
+
+# Configure per-file compilation and linking flags
+#:flags:
+#  :release:
+#    :compile:
+#      :main: # add '-Wall' to compilation of main.c
+#        - -Wall
+#      :fan: # add '--O2' to compilation of fan.c
+#        - --O2
+#      :*: # add '-foo' to compilation of all files not main.c or fan.c
+#        - -foo
+#  :test:
+#    :compile:
+#      :main: # add '--O1' to compilation of main.c as part of test builds including main.c
+#        - --O1
+#    :link:
+#      :test_main: # add '--bar --baz' to linking of test_main.exe
+#        - --bar
+#        - --baz
 
 #:tools:
 # Ceedling defaults to using gcc for compiling, linking, etc.
