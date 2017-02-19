@@ -68,6 +68,8 @@ void lib_epd_init(void)
     drv_uart_init("/dev/ttyO4", 115200, 8, 1, 'N');
 #elif defined(PLATFORM_UBUNTU)
     drv_uart_init("/dev/ttyUSB0", 115200, 8, 1, 'N');
+#elif defined(PLATFORM_CYGWIN)
+    drv_uart_init("/dev/ttyS3", 115200, 8, 1, 'N');
 #endif
     wake_up = PIN_LOW;
     reset = PIN_LOW;

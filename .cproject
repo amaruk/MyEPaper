@@ -133,7 +133,7 @@
 								<option id="gnu.c.compiler.exe.debug.option.debugging.level.996363792" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.misc.other.1818941205" name="Other flags" superClass="gnu.c.compiler.option.misc.other" useByScannerDiscovery="false" value="-c -fmessage-length=0" valueType="string"/>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.341170297" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORM_UBUNTU"/>
+									<listOptionValue builtIn="false" value="PLATFORM_CYGWIN"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1026170039" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -172,9 +172,11 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="UBUNTU"/>
 		<configuration configurationName="BBB">
 			<resource resourceType="PROJECT" workspacePath="/myEPaper"/>
 		</configuration>
+		<configuration configurationName="CYGWIN"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

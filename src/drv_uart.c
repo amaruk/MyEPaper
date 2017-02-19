@@ -147,9 +147,11 @@ int set_others(int fd)
         return (FALSE);
     }
 
+#ifndef PLATFORM_CYGWIN
     /* Disable auto echo */
     options.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOCTL
             | ECHOPRT | ECHOKE | ISIG);
+#endif
     /* Disable auto transfer of "0x0d" and "0x0a" */
     options.c_oflag &= ~(ONLCR | OCRNL);
 

@@ -34,6 +34,16 @@ typedef unsigned int    u_int32;
 typedef signed int      int32;
 typedef unsigned long   u_int64;
 typedef signed long     int64;
+#elif defined(PLATFORM_CYGWIN)
+typedef unsigned char   bool;
+typedef unsigned char   u_int8;
+typedef signed char     int8;
+typedef unsigned short  u_int16;
+typedef signed short    int16;
+typedef unsigned int    u_int32;
+typedef signed int      int32;
+typedef unsigned long   u_int64;
+typedef signed long     int64;
 #endif
 
 #endif /* COMMON_H_ */
