@@ -1,17 +1,12 @@
-/*********************************************************************************************************
+/***************************************************************************************************
  *
- * File                : main.cpp
- * Hardware Environment:
- * Build Environment   : Keil MDK
- * Version             : V4.74
- * By                  : WaveShare
+ * @file    main.c
+ * @brief   The main entry of the program.
  *
- *                                  (c) Copyright 2005-2014, WaveShare
- *                                       http://www.waveshare.net
- *                                       http://www.waveshare.com
- *                                          All Rights Reserved
+ * @author  amaruk@163.com
+ * @date    2017/02/26
  *
- *********************************************************************************************************/
+ **************************************************************************************************/
 #include "common.h"
 #include "lib_epd.h"
 

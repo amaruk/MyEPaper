@@ -1,18 +1,15 @@
-/*********************************************************************************************************
+/***************************************************************************************************
  *
- * File                : epd.h
- * Hardware Environment:
- * Build Environment   : RealView MDK-ARM  Version: 4.74
- * Version             : V1.0
- * By                  : V
+ * @file    lib_epd.h
+ * @brief   The API of waveshare 4.3 inch E-Paper screen library.
  *
- *                                  (c) Copyright 2005-2015, WaveShare
- *                                       http://www.waveshare.net
- *                                          All Rights Reserved
+ * @author  amaruk@163.com
+ * @date    2017/02/26
  *
- *********************************************************************************************************/
-#ifndef    EPD_H
-#define  EPD_H
+ **************************************************************************************************/
+
+#ifndef LIB_EPD_H
+#define LIB_EPD_H
 
 
 

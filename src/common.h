@@ -1,9 +1,12 @@
-/*
- * common.h
+/***************************************************************************************************
  *
- *  Created on: Apr 8, 2016
- *      Author: fox
- */
+ * @file    common.h
+ * @brief   Common things used in the whole project range.
+ *
+ * @author  amaruk@163.com
+ * @date    2017/02/26
+ *
+ **************************************************************************************************/
 
 #ifndef COMMON_H_
 #define COMMON_H_

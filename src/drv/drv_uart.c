@@ -1,18 +1,18 @@
-/*
- ============================================================================
- Name        : fox_uart.c
- Author      : Fox
- Version     :
- Copyright   : Fox is copyleft.
- Description : Hello World in C, Ansi-style
-
- http://blog.csdn.net/wangzhen209/article/details/32715467
- http://blog.csdn.net/zhanghuiliang/article/details/2467040
- http://blog.sina.com.cn/s/blog_4673bfa50100b5y4.html
- http://www.cnblogs.com/chengmin/p/3818133.html
- http://blog.csdn.net/w282529350/article/details/7386616
- ============================================================================
- */
+/***************************************************************************************************
+ *
+ * @file    drv_uart.c
+ * @brief   The driver of UART.
+ *          The following articles were taken as reference to make this driver:
+ *          http://blog.csdn.net/wangzhen209/article/details/32715467
+ *          http://blog.csdn.net/zhanghuiliang/article/details/2467040
+ *          http://blog.sina.com.cn/s/blog_4673bfa50100b5y4.html
+ *          http://www.cnblogs.com/chengmin/p/3818133.html
+ *          http://blog.csdn.net/w282529350/article/details/7386616
+ *
+ * @author  amaruk@163.com
+ * @date    2017/02/26
+ *
+ **************************************************************************************************/
 
 #include "common.h"
 
