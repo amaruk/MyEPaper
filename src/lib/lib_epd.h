@@ -86,38 +86,38 @@
 #define    EPD_NORMAL                         0              //screen normal
 #define    EPD_INVERSION                      1              //screen inversion
 
-void lib_epd_init(void);
-void lib_epd_close(void);
-void lib_epd_reset(void);
-void lib_epd_wakeup(void);
+void LibEpdInit(void);
+void LibEpdClose(void);
+void LibEpdReset(void);
+void LibEpdWakeup(void);
 
-void lib_epd_handshake(void);
-void lib_epd_set_baud(long baud);
+void LibEpdHandshake(void);
+void LibEpdSetBaud(long baud);
 void lib_epd_read_baud(void);
-void lib_epd_set_memory(unsigned char mode);
-void lib_epd_enter_stopmode(void);
-void lib_epd_udpate(void);
-void lib_epd_screen_rotation(unsigned char mode);
-void lib_epd_load_font(void);
-void lib_epd_load_pic(void);
+void LibEpdSetMemory(unsigned char mode);
+void LibEpdEnterStopMode(void);
+void LibEpdUpdate(void);
+void LibEpdScreenRotation(unsigned char mode);
+void LibEpdLoadFont(void);
+void LibEpdLoadPic(void);
 
-void lib_epd_set_color(unsigned char color, unsigned char bkcolor);
-void lib_epd_set_en_font(unsigned char font);
-void lib_epd_set_ch_font(unsigned char font);
+void LibEpdSetColor(unsigned char color, unsigned char bkcolor);
+void LibEpdSetEnFont(unsigned char font);
+void LibEpdSetChFont(unsigned char font);
 
-void lib_epd_draw_pixel(int x0, int y0);
-void lib_epd_draw_line(int x0, int y0, int x1, int y1);
-void lib_epd_fill_rect(int x0, int y0, int x1, int y1);
-void lib_epd_draw_circle(int x0, int y0, int r);
-void lib_epd_fill_circle(int x0, int y0, int r);
-void lib_epd_draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2);
-void lib_epd_fill_triangle(int x0, int y0, int x1, int y1, int x2, int y2);
-void lib_epd_clear(void);
+void LibEpdDrawPixel(int x0, int y0);
+void LibEpdDrawLine(int x0, int y0, int x1, int y1);
+void LibEpdFillRect(int x0, int y0, int x1, int y1);
+void LibEpdDrawCircle(int x0, int y0, int r);
+void LibEpdFillCircle(int x0, int y0, int r);
+void LibEpdDrawTriangle(int x0, int y0, int x1, int y1, int x2, int y2);
+void LibEpdFillTriangle(int x0, int y0, int x1, int y1, int x2, int y2);
+void LibEpdClear(void);
 
-void lib_epd_disp_char(unsigned char ch, int x0, int y0);
-void lib_epd_disp_string(const void * p, int x0, int y0);
+void LibEpdDispChar(unsigned char ch, int x0, int y0);
+void LibEpdDispString(const void * p, int x0, int y0);
 
-void lib_epd_disp_bitmap(const void * p, int x0, int y0);
+void LibEpdDispBitmap(const void * p, int x0, int y0);
 
 #endif
 

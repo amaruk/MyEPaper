@@ -16,43 +16,44 @@
 
 #include "common.h"
 
-static int _uart_fd;
+static int s_uart_fd;
 
 #ifdef POSIX_STD
-int speed_arr[] =
-{   B38400, B19200, B9600, B4800, B2400, B1200, B300,
-    B38400, B19200, B9600, B4800, B2400, B1200, B300,};
-int name_arr[] =
-{   38400, 19200, 9600, 4800, 2400, 1200, 300, 38400, 19200, 9600, 4800, 2400,
-    1200, 300,};
+const int c_speed_arr[] =
+{ B38400, B19200, B9600, B4800, B2400, B1200, B300,
+  B38400, B19200, B9600, B4800, B2400, B1200, B300,};
+const int c_name_arr[] =
+{ 38400, 19200, 9600, 4800, 2400, 1200, 300, 38400, 19200, 9600, 4800, 2400,
+  1200, 300,};
 #else
-int speed_arr[] =
+const int c_speed_arr[] =
 {
 B0, B50, B75, B110,
 B134, B150, B200, B300,
 B600, B1200, B1800, B2400,
 B4800, B9600, B19200, B38400,/*the POSIX std*/
 B57600, B115200, B3000000 //,	B6000000, 	B12000000/*pl2303 ext*/
-        };
-int name_arr[] =
+};
+const int c_name_arr[] =
 { 0, 50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 4800, 9600, 19200,
-        38400, /*the POSIX std*/
-        57600, 115200, 3000000 //,	6000000,	12000000 /*pl2303 ext*/
-        };
+  38400, /*the POSIX std*/
+  57600, 115200, 3000000 //,	6000000,	12000000 /*pl2303 ext*/
+};
 #endif
-void set_speed(int fd, int speed)
+
+void DrvUartSetSpeed(int fd, int speed)
 {
     int i;
     int status;
     struct termios Opt;
     tcgetattr(fd, &Opt);
-    for (i = 0; i < sizeof(speed_arr) / sizeof(int); i++)
+    for (i = 0; i < sizeof(c_speed_arr) / sizeof(int); i++)
     {
-        if (speed == name_arr[i])
+        if (speed == c_name_arr[i])
         {
             tcflush(fd, TCIOFLUSH);   //Update the options and do it NOW
-            cfsetispeed(&Opt, speed_arr[i]);
-            cfsetospeed(&Opt, speed_arr[i]);
+            cfsetispeed(&Opt, c_speed_arr[i]);
+            cfsetospeed(&Opt, c_speed_arr[i]);
             status = tcsetattr(fd, TCSANOW, &Opt);
             if (status != 0)
                 perror("tcsetattr fd1");
@@ -62,7 +63,7 @@ void set_speed(int fd, int speed)
     }
 }
 
-int set_Parity(int fd, int databits, int stopbits, int parity)
+int DrvUartSetParity(int fd, int databits, int stopbits, int parity)
 {
     struct termios options;
     if (tcgetattr(fd, &options) != 0)
@@ -138,7 +139,7 @@ int set_Parity(int fd, int databits, int stopbits, int parity)
     return (TRUE);
 }
 
-int set_others(int fd)
+int DrvUartSetOthers(int fd)
 {
     struct termios options;
     if (tcgetattr(fd, &options) != 0)
@@ -164,7 +165,7 @@ int set_others(int fd)
     return (TRUE);
 }
 
-int open_dev(char *Dev)
+int DrvUartOpenDev(char *Dev)
 {
     int fd = open(Dev, O_RDWR);         //| O_NOCTTY | O_NDELAY
     if (-1 == fd)
@@ -176,57 +177,57 @@ int open_dev(char *Dev)
 
 }
 
-int drv_uart_kill(void)
+int DrvUartKill(void)
 {
-    close(_uart_fd);
+    close(s_uart_fd);
     return TRUE;
 }
 
 /* Transmit bytes */
-int drv_uart_putchars(const unsigned char * ptr, int n)
+int DrvUartPutchars(const unsigned char * ptr, int n)
 {
-    return write(_uart_fd, ptr, n);
+    return write(s_uart_fd, ptr, n);
 }
 
 /* Receive bytes */
-int drv_uart_getchars(unsigned char * ptr)
+int DrvUartGetChars(unsigned char * ptr)
 {
     int nread = 0;
-    if ((nread = read(_uart_fd, ptr, 512)) > 0)
+    if ((nread = read(s_uart_fd, ptr, 512)) > 0)
     {
         //printf("\nLen %d ", nread);
         *(ptr + nread) = '\0';
-        printf("drv_uart_getchars: [%s]\n", ptr);
+        printf("DrvUartGetChars: [%s]\n", ptr);
     } else
     {
-        printf("drv_uart_getchars error\n");
+        printf("DrvUartGetChars error\n");
     }
     return nread;
 }
 
-int drv_uart_init(char *dev_name, int speed, int databits, int stopbits,
+int DrvUartInit(char *dev_name, int speed, int databits, int stopbits,
         int parity)
 {
 
     printf("Opening %s\n", dev_name);
-    _uart_fd = open_dev(dev_name);
+    s_uart_fd = DrvUartOpenDev(dev_name);
 
-    if (_uart_fd > 0)
+    if (s_uart_fd > 0)
     {
-        set_speed(_uart_fd, speed);
+        DrvUartSetSpeed(s_uart_fd, speed);
     } else
     {
         printf("ERROR: Can't Open Serial Port!\n");
         return FALSE;
     }
 
-    if (set_Parity(_uart_fd, databits, stopbits, parity) == FALSE)
+    if (DrvUartSetParity(s_uart_fd, databits, stopbits, parity) == FALSE)
     {
         printf("ERROR: Set Parity Error\n");
         return FALSE;
     }
 
-    set_others(_uart_fd);
+    DrvUartSetOthers(s_uart_fd);
 
     return TRUE;
 }

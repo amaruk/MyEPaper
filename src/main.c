@@ -10,166 +10,167 @@
 #include "common.h"
 #include "lib_epd.h"
 
-static void _base_draw(void)
+static void _BaseDraw(void)
 {
     int i, j;
 
     /* draw pixel */
-    lib_epd_clear();
+    LibEpdClear();
     for (j = 0; j < 600; j += 50)
     {
         for (i = 0; i < 800; i += 50)
         {
-            lib_epd_draw_pixel(i, j);
-            lib_epd_draw_pixel(i, j + 1);
-            lib_epd_draw_pixel(i + 1, j);
-            lib_epd_draw_pixel(i + 1, j + 1);
+            LibEpdDrawPixel(i, j);
+            LibEpdDrawPixel(i, j + 1);
+            LibEpdDrawPixel(i + 1, j);
+            LibEpdDrawPixel(i + 1, j + 1);
         }
     }
-    lib_epd_udpate();
+    LibEpdUpdate();
 
     usleep(3000000);
 
     /* draw line */
-    lib_epd_clear();
+    LibEpdClear();
     for (i = 0; i < 800; i += 100)
     {
-        lib_epd_draw_line(0, 0, i, 599);
-        lib_epd_draw_line(799, 0, i, 599);
+        LibEpdDrawLine(0, 0, i, 599);
+        LibEpdDrawLine(799, 0, i, 599);
     }
-    lib_epd_udpate();
+    LibEpdUpdate();
     usleep(3000000);
 
     /* fill rect */
-    lib_epd_clear();
-    lib_epd_set_color(BLACK, WHITE);
-    lib_epd_fill_rect(10, 10, 100, 100);
+    LibEpdClear();
+    LibEpdSetColor(BLACK, WHITE);
+    LibEpdFillRect(10, 10, 100, 100);
 
-    lib_epd_set_color(DARK_GRAY, WHITE);
-    lib_epd_fill_rect(110, 10, 200, 100);
+    LibEpdSetColor(DARK_GRAY, WHITE);
+    LibEpdFillRect(110, 10, 200, 100);
 
-    lib_epd_set_color(GRAY, WHITE);
-    lib_epd_fill_rect(210, 10, 300, 100);
+    LibEpdSetColor(GRAY, WHITE);
+    LibEpdFillRect(210, 10, 300, 100);
 
-    lib_epd_udpate();
+    LibEpdUpdate();
     usleep(3000000);
 
     /* draw circle */
-    lib_epd_set_color(BLACK, WHITE);
-    lib_epd_clear();
+    LibEpdSetColor(BLACK, WHITE);
+    LibEpdClear();
     for (i = 0; i < 300; i += 40)
     {
-        lib_epd_draw_circle(399, 299, i);
+        LibEpdDrawCircle(399, 299, i);
     }
-    lib_epd_udpate();
+    LibEpdUpdate();
     usleep(3000000);
 
     /* fill circle */
-    lib_epd_clear();
+    LibEpdClear();
     for (j = 0; j < 6; j++)
     {
         for (i = 0; i < 8; i++)
         {
-            lib_epd_fill_circle(50 + i * 100, 50 + j * 100, 50);
+            LibEpdFillCircle(50 + i * 100, 50 + j * 100, 50);
         }
     }
-    lib_epd_udpate();
+    LibEpdUpdate();
     usleep(3000000);
 
     /* draw triangle */
-    lib_epd_clear();
+    LibEpdClear();
     for (i = 1; i < 5; i++)
     {
-        lib_epd_draw_triangle(399, 249 - i * 50, 349 - i * 50, 349 + i * 50,
+        LibEpdDrawTriangle(399, 249 - i * 50, 349 - i * 50, 349 + i * 50,
                 449 + i * 50, 349 + i * 50);
     }
-    lib_epd_udpate();
+    LibEpdUpdate();
     usleep(3000000);
 }
-void draw_text_demo(void)
+void DrawTextDemo(void)
 {
-    lib_epd_clear();
+    LibEpdClear();
     printf("Set colours...\n");
-    lib_epd_set_color(BLACK, WHITE);
+    LibEpdSetColor(BLACK, WHITE);
     printf("Display Chinese...\n");
-    lib_epd_set_ch_font(GBK32);
-    lib_epd_disp_string("中文：狐狸", 0, 50);
-    lib_epd_set_ch_font(GBK48);
-    lib_epd_disp_string("中文：熊妈", 0, 100);
-    lib_epd_set_ch_font(GBK64);
-    lib_epd_disp_string("中文：荟雅", 0, 160);
+    LibEpdSetChFont(GBK32);
+    LibEpdDispString("中文：狐狸", 0, 50);
+    LibEpdSetChFont(GBK48);
+    LibEpdDispString("中文：熊妈", 0, 100);
+    LibEpdSetChFont(GBK64);
+    LibEpdDispString("中文：荟雅", 0, 160);
 
     printf("Display English...\n");
-    lib_epd_set_en_font(ASCII32);
-    lib_epd_disp_string("ASCII32: Fox!", 0, 300);
-    lib_epd_set_en_font(ASCII48);
-    lib_epd_disp_string("ASCII48: Carrie!", 0, 350);
-    lib_epd_set_en_font(ASCII64);
-    lib_epd_disp_string("ASCII64: Aya!", 0, 450);
+    LibEpdSetEnFont(ASCII32);
+    LibEpdDispString("ASCII32: Fox!", 0, 300);
+    LibEpdSetEnFont(ASCII48);
+    LibEpdDispString("ASCII48: Carrie!", 0, 350);
+    LibEpdSetEnFont(ASCII64);
+    LibEpdDispString("ASCII64: Aya!", 0, 450);
 
     usleep(3000000);
-    lib_epd_udpate();
-}
-void draw_bitmap_demo(void)
-{
-    lib_epd_clear();
-    lib_epd_disp_bitmap("PIC4.BMP", 0, 0);
-    lib_epd_udpate();
-    usleep(5000000);
-
-    lib_epd_clear();
-    lib_epd_disp_bitmap("PIC2.BMP", 0, 100);
-    lib_epd_disp_bitmap("PIC3.BMP", 400, 100);
-    lib_epd_udpate();
-    usleep(5000000);
-
-    lib_epd_clear();
-    lib_epd_disp_bitmap("FOXB.BMP", 0, 0);
-    lib_epd_udpate();
+    LibEpdUpdate();
 }
 
-void epaperText(char *str, int x, int y)
+void DrawBitmapDemo(void)
 {
-    lib_epd_clear();
-    lib_epd_set_color(BLACK, WHITE);
+    LibEpdClear();
+    LibEpdDispBitmap("PIC4.BMP", 0, 0);
+    LibEpdUpdate();
+    usleep(5000000);
 
-    lib_epd_set_en_font(ASCII32);
-    lib_epd_disp_string(str, x, y);
+    LibEpdClear();
+    LibEpdDispBitmap("PIC2.BMP", 0, 100);
+    LibEpdDispBitmap("PIC3.BMP", 400, 100);
+    LibEpdUpdate();
+    usleep(5000000);
+
+    LibEpdClear();
+    LibEpdDispBitmap("FOXB.BMP", 0, 0);
+    LibEpdUpdate();
+}
+
+void EpaperText(char *str, int x, int y)
+{
+    LibEpdClear();
+    LibEpdSetColor(BLACK, WHITE);
+
+    LibEpdSetEnFont(ASCII32);
+    LibEpdDispString(str, x, y);
 
     usleep(1000000);
-    lib_epd_udpate();
+    LibEpdUpdate();
 }
 
-void epaperTest(void)
+void EpaperTest(void)
 {
-    lib_epd_init();
-    lib_epd_wakeup();
+    LibEpdInit();
+    LibEpdWakeup();
 
     printf("Handshaking...\n");
-    lib_epd_handshake();
+    LibEpdHandshake();
     usleep(1000000);
     printf("Updating...\n");
-    lib_epd_udpate();
-    lib_epd_set_memory(MEM_TF);
+    LibEpdUpdate();
+    LibEpdSetMemory(MEM_TF);
 
 #if 1
     /* base Draw demo */
-    _base_draw();
+    _BaseDraw();
     /* Draw text demo */
-    draw_text_demo();
+    DrawTextDemo();
     /* Draw bitmap */
-    draw_bitmap_demo();
+    DrawBitmapDemo();
 
-    lib_epd_clear();
+    LibEpdClear();
 
-    lib_epd_close();
+    LibEpdClose();
 #endif
 
-    epaperText("Hello, BBB.", 0, 300);
+    EpaperText("Hello, BBB.", 0, 300);
 
 }
 
-static void _typeCheck(void)
+static void _TypeCheck(void)
 {
     printf("Basic type testing...\n");
     printf("bool:    ");
@@ -195,10 +196,10 @@ static void _typeCheck(void)
 int main(void)
 {
 #ifdef DEBUG
-    _typeCheck();
+    _TypeCheck();
 #endif
     
-    epaperTest();
+    EpaperTest();
 
     exit(0);
 }
